@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "3F42DEC5F0DE75D95BCBE62800211E9CB80D32D5",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "CC9E6813401FC20BF860D9A1BE28999344063381" : 0,
+    "3F42DEC5F0DE75D95BCBE62800211E9CB80D32D5" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "FBAFAAAB-9AB5-4D14-8E8C-F11C5275F6BB",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "CC9E6813401FC20BF860D9A1BE28999344063381" : "",
+    "3F42DEC5F0DE75D95BCBE62800211E9CB80D32D5" : "GDRMMobileGuangHe"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "GDRMGUANGHEMobile",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "GDRMGUANGHEMobile.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/bitbucket.org\/aforkwork\/guangheluzheng.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "3F42DEC5F0DE75D95BCBE62800211E9CB80D32D5"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/bitbucket.org\/aforkwork\/gdrmmobile.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CC9E6813401FC20BF860D9A1BE28999344063381"
+    }
+  ]
+}
