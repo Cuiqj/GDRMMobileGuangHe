@@ -11,6 +11,8 @@
 #import "UserInfo.h"
 #import "UploadRecord.h"
 #import "InspectionConstruction.h"
+
+#import "LCNetworking.h"
 @implementation AppDelegate
 
 @synthesize window = _window;
@@ -48,8 +50,55 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application{
     UploadRecord *uploadCheck = [[UploadRecord alloc] init];
     [uploadCheck asyncDel];
+    
+    [self hasUpdateVersion];
 }
-
+- (void)hasUpdateVersion{
+    //    kWeakSelf(self);
+    __weak typeof(self)weakself = self;
+    NSDictionary *infoDic=[[NSBundle mainBundle] infoDictionary];
+    NSString *currentBulidVersion = infoDic[@"CFBundleVersion"];
+    
+    //蒲公英的apikey，appkey
+    NSDictionary *paramDic = @{@"_api_key":@"d98734ffcbcb99a86ff217e63c46ecfe",@"appKey":@"a2815d1f4c267687084781f33507deda"};
+    [self loadUpdateWithDic:paramDic success:^(id response) {
+        NSLog(@"更新信息");
+        if ([currentBulidVersion integerValue] < [response[@"data"][@"buildVersionNo"]integerValue]) {
+            //如果当前手机安装app的版本号不是蒲公英上最新打包的版本号，则提示更新
+            UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"版本更新" message:@"检测到新版本,是否更新?\n更新之前请上传数据，以防数据丢失！"  preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+            [ac addAction:cancelAction];
+            UIAlertAction *doneAction = [UIAlertAction actionWithTitle:@"更新" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                //                NSURL *url = [NSURL URLWithString:response[@"data"][@"buildShortcutUrl"]];
+                //                [[UIApplication sharedApplication] openURL:url];
+                //                data =     {
+                //                    buildBuildVersion = 2;
+                //                    buildHaveNewVersion = 1;
+                //                    buildShortcutUrl = "https://www.pgyer.com/HbOA";
+                //                    buildUpdateDescription = "\U6700\U65b0\U7248\U672c\U6d4b\U8bd5";
+                //                    buildVersion = 2018092901;
+                //                    buildVersionNo = 2018092901;
+                //                    downloadURL = "itms-services://?action=download-manifest&url=https://www.pgyer.com/app/plist/e649cd191f07632c94c628774b91f0d5/update/s.plist";
+                //                };
+                NSURL *url = [NSURL URLWithString:response[@"data"][@"downloadURL"]];
+                [[UIApplication sharedApplication] openURL:url];
+            }];
+            [ac addAction:doneAction];
+            [weakself.window.rootViewController presentViewController:ac animated:YES completion:nil];
+        }
+        else if ([currentBulidVersion integerValue] >=[response[@"data"][@"buildVersionNo"]integerValue]){
+            
+        }
+    }];
+}
+- (void)loadUpdateWithDic:(NSDictionary *)dic success:(void(^)(id response))success {
+    [LCNetworking PostWithURL:@"https://www.pgyer.com/apiv2/app/check" Params:dic success:^(NSDictionary *responseObject) {
+        NSLog(@"POST_success____%@", responseObject);
+        success(responseObject);
+    } failure:^(NSString *error) {
+        NSLog(@"POST_failure____%@", error);
+    }];
+}
 -(void)initServer{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
     NSString *libraryDirectory = [paths objectAtIndex:0];

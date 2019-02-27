@@ -21,6 +21,9 @@ typedef enum:NSUInteger {
 
 @interface CaseInfo : BaseManageObject
 
+    
+//    配补偿清单备注
+@property (nonatomic, retain) NSString * casedeformation_remark;
 @property (nonatomic, retain) NSString * badcar_sum;
 @property (nonatomic, retain) NSString * badwound_sum;
 @property (nonatomic, retain) NSString * case_mark2;

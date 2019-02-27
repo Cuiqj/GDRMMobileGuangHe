@@ -52,7 +52,7 @@ static NSString * xmlName = @"CaseCountTable";
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy年MM月dd日HH时mm分"];
     [dateFormatter setLocale:[NSLocale currentLocale]];
-    
+    self.textRemark.text = caseInfo.casedeformation_remark;
     self.labelCaseAddress.text = caseInfo.full_happen_place;
     self.labelHappenTime.text = [dateFormatter stringFromDate:caseInfo.happen_date];
     if (citizen) {
@@ -73,9 +73,10 @@ static NSString * xmlName = @"CaseCountTable";
 }
 
 - (void)pageSaveInfo{
+    CaseInfo *caseInfo = [CaseInfo caseInfoForID:self.caseID];
     Citizen *citizen = [Citizen citizenForCitizenName:nil nexus:@"当事人" case:self.caseID];
     citizen.org_full_name = self.labelParty.text;
-    
+    caseInfo.casedeformation_remark = self.textRemark.text;
     self.caseCount.citizen_name = self.labelParty.text;
     self.caseCount.sum = [NSNumber numberWithDouble:[[NSString stringWithString:self.labelPayReal.text] doubleValue]];
     self.caseCount.chinese_sum = [[NSNumber numberWithDouble:[self.caseCount.sum doubleValue]] numberConvertToChineseCapitalNumberString];

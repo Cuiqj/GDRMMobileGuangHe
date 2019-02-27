@@ -262,6 +262,7 @@
 		80D2081C180722FD00D17F47 /* InquireTable2.xml in Resources */ = {isa = PBXBuildFile; fileRef = 80D20812180722FD00D17F47 /* InquireTable2.xml */; };
 		80D2081D180722FD00D17F47 /* ProveInfoTable.xml in Resources */ = {isa = PBXBuildFile; fileRef = 80D20813180722FD00D17F47 /* ProveInfoTable.xml */; };
 		80D2081E180722FD00D17F47 /* ServiceReceiptTable.xml in Resources */ = {isa = PBXBuildFile; fileRef = 80D20814180722FD00D17F47 /* ServiceReceiptTable.xml */; };
+		84698BA822268368003F583B /* LCNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 84698BA622268368003F583B /* LCNetworking.m */; };
 		9B3C3E6C1796C5940071C174 /* ServiceFileSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B3C3E6B1796C5930071C174 /* ServiceFileSelectViewController.m */; };
 		9B6464571814EE4300569AE3 /* last_page_InquireTable.xml in Resources */ = {isa = PBXBuildFile; fileRef = 9B6464561814EE4300569AE3 /* last_page_InquireTable.xml */; };
 		9BC0B11217A9001800D7C9CD /* TBXML+TraverseAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BC0B11117A9001700D7C9CD /* TBXML+TraverseAddition.m */; };
@@ -721,6 +722,8 @@
 		80D20812180722FD00D17F47 /* InquireTable2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = InquireTable2.xml; sourceTree = "<group>"; };
 		80D20813180722FD00D17F47 /* ProveInfoTable.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ProveInfoTable.xml; sourceTree = "<group>"; };
 		80D20814180722FD00D17F47 /* ServiceReceiptTable.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ServiceReceiptTable.xml; sourceTree = "<group>"; };
+		84698BA622268368003F583B /* LCNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCNetworking.m; sourceTree = "<group>"; };
+		84698BA722268368003F583B /* LCNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCNetworking.h; sourceTree = "<group>"; };
 		9B3C3E6A1796C5920071C174 /* ServiceFileSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceFileSelectViewController.h; sourceTree = "<group>"; };
 		9B3C3E6B1796C5930071C174 /* ServiceFileSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceFileSelectViewController.m; sourceTree = "<group>"; };
 		9B6464561814EE4300569AE3 /* last_page_InquireTable.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = last_page_InquireTable.xml; sourceTree = "<group>"; };
@@ -1264,6 +1267,8 @@
 				33A5276714F4E5BD009BC91E /* Views Controller */,
 				33A5275914F4E3E6009BC91E /* AppDelegate.h */,
 				33A5275A14F4E3E6009BC91E /* AppDelegate.m */,
+				84698BA722268368003F583B /* LCNetworking.h */,
+				84698BA622268368003F583B /* LCNetworking.m */,
 				33A6B15B16523D7400E6DF90 /* AGAlertViewWithProgressbar.h */,
 				33A6B15C16523D7400E6DF90 /* AGAlertViewWithProgressbar.m */,
 				3365B34C169AAF8200E9D039 /* NSAttributedString+DrawMethod.h */,
@@ -1852,6 +1857,7 @@
 				B3B6D046152C891F00818B33 /* IconModels.m in Sources */,
 				330EF711152D740C0096F7D9 /* DWStroke.m in Sources */,
 				330EF719152D754A0096F7D9 /* PaintArea.m in Sources */,
+				84698BA822268368003F583B /* LCNetworking.m in Sources */,
 				33D1A4821533FB6500FE8092 /* MoveableImage.m in Sources */,
 				335C8B8D1535169000B406CD /* InitIconModel.m in Sources */,
 				33A011E015367FFB0013937F /* CaseDocumentsViewController.m in Sources */,
