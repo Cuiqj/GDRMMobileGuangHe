@@ -90,6 +90,7 @@
                 case 7:
                 case 8:
                 case 9:
+                case 26:
                 case 10:
                     //直线，圆，矩形，曲线，箭头，双向箭头，虚线，护栏，草坪
                 {
@@ -177,6 +178,7 @@
                     case 1:
                     case 2:
                     case 9:
+                    case 26:
                     case 10:
                     {
                         DWStroke *tempStroke=[self.dwStrokes lastObject];
@@ -227,7 +229,9 @@
                         [stroke addGrassP1:gP1 P2:gP2];
                         break;
                         //文字
-                    case 10:{
+                    case 26:
+                    case 10:
+                    {
                         [self.dwStrokes removeObject:stroke];
                         CGRect tempRect=CGRectMake(gP1.x<gP2.x?gP1.x:gP2.x,gP1.y<gP2.y?gP1.y:gP2.y,ABS(gP1.x-gP2.x),ABS(gP1.y-gP2.y));
                         [self.delegate addMoveTextInRect:tempRect];

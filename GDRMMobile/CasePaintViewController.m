@@ -14,6 +14,8 @@
 #import "DDXMLElementAdditions.h"
 #import "DDXMLNode+CDATA.h"
 
+
+//#import "CasePhoto.h"
 //绘图放大倍数
 #define zoom 3
 #define FontSizeScaleFactor 0.9
@@ -29,6 +31,11 @@
 @property (nonatomic,retain) UIPopoverController *textInputPopover;
 @property (nonatomic,retain) NSArray *iconTypeArray;
 @property (nonatomic,retain) NSArray *paintToolsArray;
+
+
+@property (nonatomic,retain) NSArray *paintToolsArraynum;
+@property (nonatomic,retain) NSArray *paintToolsArrayABC;
+@property (nonatomic,retain) NSString * selectedNUMorABC;
 //@property (nonatomic,retain) NSString *roadModelID;
 
 //add by lxm 2013.05.13
@@ -56,6 +63,9 @@
 @synthesize textInputPopover=_textInputPopover;
 @synthesize iconTypeArray=_iconTypeArray;
 @synthesize paintToolsArray=_paintToolsArray;
+@synthesize paintToolsArraynum=_paintToolsArraynum;
+@synthesize paintToolsArrayABC=_paintToolsArrayABC;
+@synthesize selectedNUMorABC = _selectedNUMorABC;
 //@synthesize roadModelID = _roadModelID;
 
 //add by lxm
@@ -65,17 +75,15 @@
 
 - (void)viewDidLoad{
     NSString *imagePath=[[NSBundle mainBundle] pathForResource:@"现场勘验图-bg" ofType:@"png"];
-    self.view.layer.contents=(id)[[UIImage imageWithContentsOfFile:imagePath] CGImage];    
-    
-    self.iconTypeArray=@[@"模版",@"车辆",@"路产",@"绘图", @"说明"];
+    self.view.layer.contents=(id)[[UIImage imageWithContentsOfFile:imagePath] CGImage];
+    self.iconTypeArray=@[@"模版",@"车辆",@"路产",@"绘图",@"数字",@"字母",@"说明"];
     self.paintToolsArray=@[@"直线",@"圆",@"矩形",@"点",@"曲线",@"箭头",@"双向箭头",@"虚线",@"护栏",@"草坪",@"文字标识",@"擦除"];
+    self.paintToolsArraynum = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9"];
+    self.paintToolsArrayABC = @[@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I"];
     
     UIFont *segFont = [UIFont boldSystemFontOfSize:15.0f];
-    NSDictionary *attributes = [NSDictionary dictionaryWithObject:segFont
-                                                           forKey:UITextAttributeFont];
-    [self.segWidth setTitleTextAttributes:attributes 
-                                    forState:UIControlStateNormal];
-    
+    NSDictionary *attributes = [NSDictionary dictionaryWithObject:segFont forKey:UITextAttributeFont];
+    [self.segWidth setTitleTextAttributes:attributes forState:UIControlStateNormal];
     self.roadModelBoard=[[RoadModelBoard alloc] initWithFrame:CGRectMake(0.0f,0.0f, PaintAreaWidth, PaintAreaHeight)];
     self.roadModelBoard.image=nil;
     [self.roadModelBoard setUserInteractionEnabled:NO];
@@ -94,7 +102,7 @@
     self.pageIndicator.numberOfPages=1;
 
     [super viewDidLoad];
-    self.IconType.frame = CGRectMake(0.5, 1, 47, 350);
+    self.IconType.frame = CGRectMake(0.5, 1, 47, 490);
     [self.view addSubview:self.IconType];
     
     
@@ -142,8 +150,7 @@
     [self.delegate reloadPaint];
      */
     [self.delegate reloadPaint];
-    if(isModify)
-    {
+    if(isModify){
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"返回案件信息" message:@"当前草图未保存，是否返回" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
         [alert setDelegate:self];
         [alert show];
@@ -249,8 +256,7 @@
                     [backGroundNode insertChild:itemsElement atIndex:0];
                 }
             }
-        NSLog(@"subviews=%d",[self.paintBoard.subviews count]);
-
+            NSLog(@"subviews=%d",[self.paintBoard.subviews count]);
             for (MoveableImage *moveImage in self.paintBoard.subviews) {
                 if ([moveImage isMemberOfClass:[MoveableImage class]]) {
                     NSString *nameString = moveImage.iconModelID;
@@ -315,9 +321,17 @@
                 DDXMLElement *itemElement = [DDXMLElement elementWithName:@"IconItem" children:nil attributes:@[typeAttri, x1Attri, y1Attri, x2Attri, y2Attri]];
                 [foreGroundItemsNode addChild:itemElement];
             }
-            casemap.map_item = [mapItemDoc XMLStringWithOptions:DDXMLNodeCompactEmptyElement];
-        NSLog(@"map_Item=%@",casemap.map_item);
-
+            NSString * temp_item = [mapItemDoc XMLStringWithOptions:DDXMLNodeCompactEmptyElement];
+            for (int i = 1; i>0; i++) {
+                if([temp_item containsString:@"<Items> </Items>"] || [temp_item containsString:@"<Texts> </Texts>"] || [temp_item containsString:@"<Icons> </Icons>"]){
+                    temp_item = [[[temp_item stringByReplacingOccurrencesOfString:@"<Items> </Items>" withString:@"<Items/>"] stringByReplacingOccurrencesOfString:@"<Texts> </Texts>" withString:@"<Texts/>"] stringByReplacingOccurrencesOfString:@"<Icons> </Icons>" withString:@"<Icons/>"];
+                }else{
+                    break;
+                }
+            }
+            NSLog(@"map_Item=%@",temp_item);
+            casemap.map_item = temp_item;
+        
             casemap.isuploaded = @(NO);
             [[AppDelegate App] saveContext];
         //});
@@ -342,9 +356,10 @@
 
 -(void)addMoveTextInRect:(CGRect)rect{
     TextInputViewController *textInputVC=[self.storyboard instantiateViewControllerWithIdentifier:@"TextInputView"];
-    textInputVC.view.frame=CGRectMake(self.contentScrollView.frame.origin.x+self.contentScrollView.frame.size.width/2-200, self.contentScrollView.frame.origin.y,400, 240);
+textInputVC.view.frame=CGRectMake(self.contentScrollView.frame.origin.x+self.contentScrollView.frame.size.width/2-200, self.contentScrollView.frame.origin.y,400, 240);
     textInputVC.delegate=self;
     textInputVC.rectPresentFrom=rect;
+    textInputVC.ABCorNUMstring = self.selectedNUMorABC;
     self.textInputPopover=[[UIPopoverController alloc] initWithContentViewController:textInputVC];
     
     [self.textInputPopover presentPopoverFromRect:[self.view convertRect:rect fromView:self.paintBoard] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
@@ -407,7 +422,7 @@
     NSInteger numberOfRows=0;
     switch (tableView.tag) {
         case 1:
-            numberOfRows=self.iconTypeArray.count;
+            numberOfRows  = self.iconTypeArray.count;
             break;
         case 2:{        
             switch (selectedType) {
@@ -421,6 +436,12 @@
                     break;        
                 case 3:
                     numberOfRows=self.paintToolsArray.count;
+                    break;
+                case 4:
+                    numberOfRows=self.paintToolsArraynum.count;
+                    break;
+                case 5:
+                    numberOfRows=self.paintToolsArrayABC.count;
                     break;
                 default:
                     break;
@@ -467,9 +488,15 @@
                     cell.textLabel.text=iconModel.iconname;                    
                 }                       
                     break;
-               case 3:
+                case 3:
                     cell.textLabel.text=[self.paintToolsArray objectAtIndex:indexPath.row];
-                    break;                    
+                    break;
+                case 4:
+                    cell.textLabel.text=[self.paintToolsArraynum objectAtIndex:indexPath.row];
+                    break;
+                case 5:
+                    cell.textLabel.text=[self.paintToolsArrayABC objectAtIndex:indexPath.row];
+                    break;
                 default:
                         break;
             }
@@ -484,6 +511,7 @@
 #pragma mark - UITableView Delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    self.selectedNUMorABC = @"";
     switch (tableView.tag) {
         case 1:{
             selectedType=indexPath.row;
@@ -496,7 +524,7 @@
                     [moveImage setUserInteractionEnabled:YES];
                 }                            
             }
-            if (selectedType==4) {
+            if (selectedType==6) {
                 [self performSegueWithIdentifier:@"toRemarkTextEdit" sender:nil];
             }
         }
@@ -526,8 +554,8 @@
                 }
                     break;
                 case 3:{
-                    if (selectedTool!=indexPath.row){
-                        selectedTool=indexPath.row;
+                    if (selectedTool !=indexPath.row){
+                        selectedTool = indexPath.row;
                         self.paintBoard.selectedTool=indexPath.row;
                         [self.paintBoard setUserInteractionEnabled:YES];
                         for (MoveableImage * moveImage in self.paintBoard.subviews) {
@@ -538,7 +566,28 @@
                     }
                 }
                     break;
-
+                case 4:
+                case 5:
+                {
+                    if (selectedTool !=indexPath.row){
+                        if (selectedType == 4) {
+                            self.selectedNUMorABC = self.paintToolsArraynum[indexPath.row];
+                        }
+                        if (selectedType == 5) {
+                            self.selectedNUMorABC = self.paintToolsArrayABC[indexPath.row];
+                        }
+                        selectedTool = 26;
+                        self.paintBoard.selectedTool = 26;
+                        self.paintBoard.selectedType = 3;
+                        [self.paintBoard setUserInteractionEnabled:YES];
+                        for (MoveableImage * moveImage in self.paintBoard.subviews) {
+                            if ([moveImage isMemberOfClass:[MoveableImage class]]) {
+                                [moveImage setUserInteractionEnabled:NO];
+                            }
+                        }
+                    }
+                }
+                    break;
                 default:
                     break;
             }

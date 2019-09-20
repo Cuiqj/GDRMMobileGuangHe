@@ -118,7 +118,13 @@
 }
 
 -(void)showdate:(NSString *)date{
-    self.datefrom=date;
+    NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+    [dateFormatter setLocale:[NSLocale currentLocale]];
+    [dateFormatter setDateFormat:@"HH:mm"];
+    NSDate * currentdate = [dateFormatter dateFromString:date];
+    [dateFormatter setDateFormat:@"HH时mm分"];
+    NSString * currentdatestring = [dateFormatter stringFromDate:currentdate];
+    self.datefrom = currentdatestring;
 }
 
 - (void)showPastDate:(NSDate* )date{

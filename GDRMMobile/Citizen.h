@@ -60,4 +60,9 @@
 #pragma mark - 行政处罚  需要注意的是跟【路政案件】的最大区别是 对应一个案件，一个类别(当事人,组织代表等)只有一个对应的当事人，不会有多个，也就说，相对于路政案件，不会有多车辆问题
 + (Citizen *)citizenByCaseID:(NSString *)caseID andNexus:(NSString *)nexus;
 + (Citizen *)citizenByCaseID:(NSString *)caseID;
+    
+    
+- (NSString *)really_org_name;
+- (NSString *)really_party;
+    
 @end

@@ -55,9 +55,8 @@
 
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad
-{
-
+- (void)viewDidLoad{
+    [self.updateDocFormatBtn setHidden:YES];
 	self.versionName.text = VERSION_NAME;
 	self.versionTime.text = VERSION_TIME;
     NSString *imagePath=[[NSBundle mainBundle] pathForResource:@"小按钮" ofType:@"png"];

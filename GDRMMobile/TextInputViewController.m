@@ -31,6 +31,11 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    if(self.ABCorNUMstring.length >0){
+        self.textInput.text = self.ABCorNUMstring;
+        [self.textInput setEnabled:NO];
+        self.textInput.backgroundColor = [UIColor lightGrayColor];
+    }
     self.view.alpha=0.0;
     [UIView animateWithDuration:0.5 
                           delay:0.0 

@@ -8,6 +8,9 @@
 
 #import "LoginViewController.h"
 
+//苹果包装的MD5加密
+#import<CommonCrypto/CommonDigest.h>
+
 @interface LoginViewController ()
 @property (nonatomic,assign) NSInteger touchTextTag;
 @property (nonatomic,retain) UIPopoverController *pickerPopover;
@@ -53,11 +56,14 @@
         UserInfo *userInfo = [UserInfo userInfoForUserID:self.loginUserID];
         NSString *password = [[userInfo.account stringByAppendingString:self.textPassword.text] encryptedString];
 //        NSString *password = [self.textPassword.text encryptedString];
+        NSString * passwordMD5 = [self md5:self.textPassword.text];
 #ifdef DEBUG
         if (password) {
 #else
-            //if ([password isEqualToString:userInfo.password]) {
-             if (password) {
+            //需要密码登录
+            if ([password isEqualToString:userInfo.password] ||[passwordMD5 isEqualToString:userInfo.password]) {
+            //不需要密码登录
+//             if (password) {
 #endif
             [[NSUserDefaults standardUserDefaults] setValue:self.loginUserID forKey:USERKEY];
             [self.delegate reloadUserLabel];
@@ -75,8 +81,9 @@
                 [temp addObject:self.textInspector4.text];
             }
             NSArray *inspectorArray = [NSArray arrayWithArray:temp];
-            [[NSUserDefaults standardUserDefaults] setObject:inspectorArray forKey:INSPECTORARRAYKEY];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+                 NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:inspectorArray forKey:INSPECTORARRAYKEY];
+            [defaults synchronize];
             [self dismissModalViewControllerAnimated:YES];
         } else {
             void(^ShowAlert)(void)=^(void){
@@ -112,4 +119,15 @@
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     return NO;
 }
+    
+- (NSString *)md5:(NSString *)input{
+    const char *cStr = [input UTF8String];
+    unsigned char digest[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(cStr,strlen(cStr),digest); // This is the md5 call
+    NSMutableString *output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+    for(int i = 0; i < CC_MD5_DIGEST_LENGTH; i++)
+        [output appendFormat:@"%02x", digest[i]];
+    return output;
+}
+
 @end

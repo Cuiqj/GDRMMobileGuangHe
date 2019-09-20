@@ -127,4 +127,19 @@
 + (Citizen *)citizenByCaseID:(NSString *)caseID{
     return [Citizen citizenByCaseID:caseID andNexus:@"当事人"];
 }
+
+- (NSString *)really_org_name{
+    if(self.org_name.length>0){
+        return self.org_name;
+    }else{
+        return self.party;
+    }
+}
+- (NSString *)really_party{
+    if(self.org_name.length>0){
+        return self.party;
+    }
+    return @"";
+}
+    
 @end

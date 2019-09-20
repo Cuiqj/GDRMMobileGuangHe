@@ -133,4 +133,12 @@
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
     return NO;
 }
+
+- (void)deleteCurrentDoc{
+    CaseMap *caseMap = [CaseMap caseMapForCase:self.caseID];
+    if (![self.caseID isEmpty] && caseMap){
+        [[[AppDelegate App] managedObjectContext] deleteObject:caseMap];
+        [[AppDelegate App] saveContext];
+    }
+}
 @end

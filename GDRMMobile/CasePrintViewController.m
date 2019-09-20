@@ -2002,8 +2002,8 @@ typedef enum {
                             if (dataInXML) {
                                 contentString = [contentString stringByAppendingString:[self formedStringFromData:one XMLElement:dataInXML]];
                             }
-                            //[contentString alignWithVerticalCenterDrawInRect:rect withFont:font horizontalAlignment:cellAlignment];
-                            [contentString drawStringFitIntoRect:rect withBasicFont:font];
+                            [contentString alignWithVerticalCenterDrawInRect:rect withFont:font horizontalAlignment:cellAlignment];
+//                            [contentString drawStringFitIntoRect:rect withBasicFont:font];
                             if (rowH < cellH) {
                                 rowH = cellH;
                             }

@@ -46,11 +46,17 @@ typedef enum {
 @property (weak, nonatomic) IBOutlet UITextField *textPlaceNormal;
 @property (weak, nonatomic) IBOutlet UITextField *textDescNormal;
 @property (weak, nonatomic) IBOutlet UITextView *textViewNormalDesc;
+
 - (IBAction)btnFormNormalDesc:(id)sender;
+
 - (IBAction)viewNormalTextTouch:(UITextField *)sender;
+
 - (IBAction)viewNormalRoadTouch:(id)sender;
+
 - (IBAction)pickerNormalDesc:(id)sender;
+
 - (IBAction)addCounstructionChangeBack:(id)sender;
+//交通事故
 - (IBAction)addTrafficRecord:(id)sender;
 
 @property (weak, nonatomic) id<InspectionHandler> delegate;

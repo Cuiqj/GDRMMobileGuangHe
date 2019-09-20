@@ -1633,9 +1633,9 @@
 		33D091111A359A8700F83538 /* DataSync */ = {
 			isa = PBXGroup;
 			children = (
-				33D091181A359B4900F83538 /* DataSyncController.h */,
 				336E62361F6B70DB007489A9 /* OMGToast.m */,
 				336E62371F6B70DB007489A9 /* OMGToast.h */,
+				33D091181A359B4900F83538 /* DataSyncController.h */,
 				33D091191A359B4900F83538 /* DataSyncController.m */,
 				33D0911A1A359B4900F83538 /* ServerSettingController.h */,
 				33D0911B1A359B4900F83538 /* ServerSettingController.m */,
@@ -2097,6 +2097,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 27NSK65R5P;
+				ENABLE_BITCODE = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GDRMMobile/GDRMGUANGHEMobile-Prefix.pch";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2/;
@@ -2122,6 +2123,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 27NSK65R5P;
+				ENABLE_BITCODE = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GDRMMobile/GDRMGUANGHEMobile-Prefix.pch";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2/;

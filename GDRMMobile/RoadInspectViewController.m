@@ -245,6 +245,7 @@ InspectionCheckState inspectionState;
         [self.view bringSubviewToFront:self.pathView];
     }
     [self.tableRecordList reloadData];
+    
 }
 
 - (void)setInspectionDelegate:(NSString *)aInspectionID{
@@ -272,7 +273,6 @@ InspectionCheckState inspectionState;
     [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
     [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
 
-    
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:animationDuration];
     [UIView setAnimationCurve:animationCurve];
@@ -318,8 +318,8 @@ InspectionCheckState inspectionState;
     if (self.state == kRecord) {
         [self saveRemark];
     } else {
+        //过站记录
         if (![self.textCheckTime.text isEmpty] && ![self.textStationName.text isEmpty] && ![self.textCheckStatus.text isEmpty]) {
-            
             NSIndexPath *index = [self.tableRecordList indexPathForSelectedRow];
             InspectionPath *newPath;
             if (index==nil) {
@@ -357,7 +357,7 @@ InspectionCheckState inspectionState;
         [dateFormatter setLocale:[NSLocale currentLocale]];
         [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
         inspectionRecord.start_time=[dateFormatter dateFromString:self.textCheckTime.text];
-        [dateFormatter setDateFormat:DATE_FORMAT_HH_MM_COLON];
+        [dateFormatter setDateFormat:DATE_FORMAT_HH_MM];
         
         NSString *timeString=[dateFormatter stringFromDate:inspectionRecord.start_time];
         
@@ -587,7 +587,7 @@ InspectionCheckState inspectionState;
     [dateFormatter setLocale:[NSLocale currentLocale]];
     inspectionRecord.start_time = caseInfo.happen_date;
     
-    [dateFormatter setDateFormat:DATE_FORMAT_HH_MM_COLON];
+    [dateFormatter setDateFormat:DATE_FORMAT_HH_MM];
     NSString *timeString=[dateFormatter stringFromDate:inspectionRecord.start_time];
     NSMutableString *remark=[[NSMutableString alloc] initWithFormat:@"%@巡至%@往%@方向K%@+%@处时，发现%@驾驶%@%@在%@发生交通事故，",timeString, [RoadSegment roadNameFromSegment:caseInfo.roadsegment_id], caseInfo.side, [caseInfo station_start_km], [caseInfo station_start_m], citizen.party, citizen.automobile_number, citizen.automobile_pattern, caseInfo.place];
     if ([caseInfo.fleshwound_sum intValue]==0 && [caseInfo.badwound_sum intValue]==0 && [caseInfo.death_sum intValue]==0) {

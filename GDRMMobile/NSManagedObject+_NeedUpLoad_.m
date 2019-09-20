@@ -28,8 +28,10 @@
         [fetchRequest setPredicate:[NSPredicate  predicateWithFormat:@"isuploaded.boolValue == NO && proveinfo_id != nil"]];
     }else{
         [fetchRequest setPredicate:[NSPredicate  predicateWithFormat:@"isuploaded.boolValue == NO"]];
+//        if ([NSStringFromClass([self class]) isEqualToString:@"CaseMap"]) {
+//            NSLog(@"");
+//        }
     }
-    
     return [context executeFetchRequest:fetchRequest error:nil];
 }
 
@@ -194,13 +196,11 @@
                                     "<data>%@</data>"
                                     "<remark>%@</remark>";
     CasePhoto *photo = (CasePhoto*)self;
-    
     NSArray *pathArray=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentPath=[pathArray objectAtIndex:0];
     NSString *photoPath=[NSString stringWithFormat:@"InspectionConstruction/%@",photo.proveinfo_id];
-    photoPath=[documentPath stringByAppendingPathComponent:photoPath];     
-        
-    UIImage *image = [UIImage imageWithContentsOfFile:[photoPath stringByAppendingPathComponent:photo.photo_name]];
+    photoPath=[documentPath stringByAppendingPathComponent:photoPath];
+    UIImage * image = [UIImage imageWithContentsOfFile:[photoPath stringByAppendingPathComponent:photo.photo_name]];
     NSData *data = UIImagePNGRepresentation(image);
     NSString *stringImage = [NSString base64forData:data];
     casePhotoStr = [NSString stringWithFormat:casePhotoStr,photo.myid?photo.myid:@"",photo.proveinfo_id?photo.proveinfo_id:@"",photo.photo_name?photo.photo_name:@"",stringImage?stringImage:@"",photo.remark?photo.remark:@""];

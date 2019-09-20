@@ -12,9 +12,13 @@
 #import "UploadRecord.h"
 #import "CasePhoto.h"
 
+#import "InspectionPath.h"
+#import "CaseInfo.h"
+#import "UserInfo.h"
+
 //所需上传的表名称
 //modify by lxm 2013.05.13
-static NSString *dataNameArray[UPLOADCOUNT]={@"Project",@"Task",@"AtonementNotice",@"CaseDeformation",@"CaseInfo",@"CaseInquire",@"CaseProveInfo",@"CaseServiceFiles",@"CaseServiceReceipt",@"Citizen",@"RoadWayClosed",@"Inspection",@"InspectionCheck",@"InspectionOutCheck",@"InspectionPath",@"InspectionRecord",@"ParkingNode",@"CaseMap",@"ConstructionChangeBack",@"TrafficRecord",@"InspectionConstruction",@"CasePhoto"};
+static NSString *dataNameArray[UPLOADCOUNT]={@"CaseMap",@"CasePhoto",@"Project",@"Task",@"AtonementNotice",@"CaseDeformation",@"CaseInfo",@"CaseInquire",@"CaseProveInfo",@"CaseServiceFiles",@"CaseServiceReceipt",@"Citizen",@"RoadWayClosed",@"InspectionCheck",@"InspectionOutCheck",@"InspectionPath",@"InspectionRecord",@"ParkingNode",@"ConstructionChangeBack",@"TrafficRecord",@"InspectionConstruction",@"Inspection"};
 
 //static NSString *dataNameArray[UPLOADCOUNT]={@"CaseMap"};
 
@@ -55,11 +59,40 @@ static NSString *dataNameArray[UPLOADCOUNT]={@"Project",@"Task",@"AtonementNotic
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self setProgressView:nil];
 }
-
+- (void)setchangeofCaseInfoAndInspectionPath:(NSString *)name andarray:(NSArray *)array{
+    if ([name isEqualToString:@"InspectionPath"]) {
+        for (id obj in array) {
+            InspectionPath * path = (InspectionPath *)obj;
+            if (path.inspectionid.length>0) {
+                
+            }else{
+                path.inspectionid = @"000";
+//                NSManagedObjectContext *context=[[AppDelegate App] managedObjectContext];
+//                [context deleteObject:obj];
+                [[AppDelegate App] saveContext];
+            }
+        }
+    }else if ([name isEqualToString:@"CaseInfo"]){
+        for (id obj in array) {
+            CaseInfo * path = (CaseInfo *)obj;
+            if (path.organization_id.length>0) {
+                
+            }else{
+                NSString *currentUserID=[[NSUserDefaults standardUserDefaults] stringForKey:USERKEY];
+                NSString *orgID = [UserInfo userInfoForUserID:currentUserID].organization_id;
+                path.organization_id = orgID;
+                [[AppDelegate App] saveContext];
+            }
+        }
+    }
+}
 
 - (void)uploadDataAtIndex:(NSInteger)index{
     NSString *currentDataName = dataNameArray[index];
-
+    NSArray *Array = [NSClassFromString(currentDataName) uploadArrayOfObject];
+    if ([currentDataName isEqualToString:@"CaseInfo"] || [currentDataName isEqualToString:@"InspectionPath"]) {
+        [self setchangeofCaseInfoAndInspectionPath:currentDataName andarray:Array];
+    }
     NSArray *dataArray = [NSClassFromString(currentDataName) uploadArrayOfObject];
     if (dataArray.count > 0) {
         if ([currentDataName isEqualToString:@"CasePhoto"]) {
@@ -218,7 +251,7 @@ static NSString *dataNameArray[UPLOADCOUNT]={@"Project",@"Task",@"AtonementNotic
         [[NSNotificationCenter defaultCenter] postNotificationName:UPLOADFINISHWITHOBJECT object:nil userInfo:userInfo];
     } else {
         NSString *upLoadedDataName = dataNameArray[self.currentWorkIndex];
-        NSString *message = [[NSString alloc] initWithFormat:@"上传%@出现错误",upLoadedDataName];
+        NSString *message = [[NSString alloc] initWithFormat:@"上传%@表出现错误",upLoadedDataName];
         NSLog(@"ERROR!:%@\n%@",upLoadedDataName, webString);
         [self.progressView setMessage:message];
         double delayInSeconds = 0.5;

@@ -15,6 +15,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *textInput;
 @property (weak, nonatomic) IBOutlet UITextField *textFontSize;
 
+@property (nonatomic,strong) NSString * ABCorNUMstring;
+
 - (IBAction)btnAddText:(id)sender;
 - (IBAction)btnCancel:(id)sender;
 

@@ -188,7 +188,7 @@
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
             inspectionRecord.start_time=[dateFormatter dateFromString:self.textDate.text];
             
-            [dateFormatter setDateFormat:DATE_FORMAT_HH_MM_COLON];
+            [dateFormatter setDateFormat:DATE_FORMAT_HH_MM];
             NSString *timeString=[dateFormatter stringFromDate:inspectionRecord.start_time];
             NSString *remark=[[NSString alloc] initWithFormat:@"%@",timeString];
             self.textCheckHandle.text=[self.textCheckHandle.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -200,14 +200,10 @@
             [[AppDelegate App] saveContext];
             [self.delegate reloadRecordData];
             [self.delegate addObserverToKeyBoard];
-            [self dismissModalViewControllerAnimated:YES];
-
-
-            
-            
-            
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
         if (!isBlank) {
+            //新增巡查记录
             InspectionRecord *inspectionRecord=[InspectionRecord newDataObjectWithEntityName:@"InspectionRecord"];
             inspectionRecord.roadsegment_id=[NSString stringWithFormat:@"%d", [self.roadSegmentID intValue]];
             inspectionRecord.fix=self.textSide.text;
@@ -224,7 +220,7 @@
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
             inspectionRecord.start_time=[dateFormatter dateFromString:self.textDate.text];
             
-            [dateFormatter setDateFormat:DATE_FORMAT_HH_MM_COLON];
+            [dateFormatter setDateFormat:DATE_FORMAT_HH_MM];
             NSString *timeString=[dateFormatter stringFromDate:inspectionRecord.start_time];
             NSString *remark=[[NSString alloc] initWithFormat:@"%@巡至%@%@K%02d+%03dM处时，在公路%@%@，巡逻班组%@。",timeString,self.textSegement.text,self.textSide.text,self.textStationStartKM.text.integerValue,self.textStationStartM.text.integerValue,self.textPlace.text,self.textCheckReason.text,self.textCheckStatus.text];
             self.textCheckHandle.text=[self.textCheckHandle.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -236,7 +232,7 @@
             [[AppDelegate App] saveContext];
             [self.delegate reloadRecordData];
             [self.delegate addObserverToKeyBoard];
-            [self dismissModalViewControllerAnimated:YES];
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
     } else {
         BOOL isBlank =NO;
@@ -249,13 +245,14 @@
         }
         if (!isBlank) {
             if ([self.textViewNormalDesc.text isEmpty]) {
+                //无异常情况巡查
                 self.textViewNormalDesc.text = [NSString stringWithFormat:@"%@，巡查%@%@，%@",self.textTimeStart.text,self.textRoad.text,self.textPlaceNormal.text,self.textDescNormal.text];
             }
             InspectionRecord *inspectionRecord=[InspectionRecord newDataObjectWithEntityName:@"InspectionRecord"];
             inspectionRecord.roadsegment_id=[NSString stringWithFormat:@"%d", [self.roadSegmentID intValue]];
             inspectionRecord.fix=self.textPlaceNormal.text;
             inspectionRecord.inspection_type=@"日常巡查";
-            inspectionRecord.inspection_item= @"无异常";
+            inspectionRecord .inspection_item= @"无异常";
             inspectionRecord.location=self.textPlaceNormal.text;
             inspectionRecord.measure=@"";
             inspectionRecord.status=@"";
@@ -263,13 +260,13 @@
             inspectionRecord.relationid = @"0";
             NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
             [dateFormatter setLocale:[NSLocale currentLocale]];
-            [dateFormatter setDateFormat:DATE_FORMAT_HH_MM_COLON];
+            [dateFormatter setDateFormat:DATE_FORMAT_HH_MM];
             inspectionRecord.start_time = [dateFormatter dateFromString:self.textTimeStart.text];
             inspectionRecord.remark=self.textViewNormalDesc.text;
             [[AppDelegate App] saveContext];
             [self.delegate reloadRecordData];
             [self.delegate addObserverToKeyBoard];
-            [self dismissModalViewControllerAnimated:YES];
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
     }
 }
@@ -407,7 +404,7 @@
         [dateFormatter setLocale:[NSLocale currentLocale]];
         [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
         NSDate *temp=[dateFormatter dateFromString:date];
-        [dateFormatter setDateFormat:DATE_FORMAT_HH_MM_COLON];
+        [dateFormatter setDateFormat:DATE_FORMAT_HH_MM];
         NSString *dateString=[dateFormatter stringFromDate:temp];
         if (self.isStartTime) { self.textTimeStart.text = dateString;}
         //else { self.textTimeEnd.text = dateString;}

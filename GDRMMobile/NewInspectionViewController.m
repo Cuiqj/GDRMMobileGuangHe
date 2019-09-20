@@ -179,7 +179,7 @@
     }
     if (!isBlank) {
         Inspection *newInspection=[Inspection newDataObjectWithEntityName:@"Inspection"];
-        NSString *newInspectionID=newInspection.myid;
+        NSString * newInspectionID=newInspection.myid;
         [[NSUserDefaults standardUserDefaults] setValue:newInspectionID forKey:INSPECTIONKEY];        
         [[NSUserDefaults standardUserDefaults] synchronize];
         NSDateFormatter *formatter=[[NSDateFormatter alloc] init];
